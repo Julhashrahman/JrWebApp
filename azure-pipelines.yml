@@ -9,8 +9,8 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
- variables:
-   solutionDir: 'JrWebApp'
+ #variables:
+ #  solutionDir: 'JrWebApp'
 
 steps:
   - script: pwd
@@ -21,7 +21,7 @@ steps:
 
   - script: dotnet build
     displayName: 'dotnet build'
-    workingDirectory: $(solutionDir)
+    workingDirectory: 'JrWebApp'
 
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
