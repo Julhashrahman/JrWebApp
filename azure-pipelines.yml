@@ -16,13 +16,12 @@ steps:
   - script: pwd
     displayName: 'what directory are we in?'
 
+  - script: ls -la
+    displayName: 'what files are in this folder?'
+
 #steps:
 #  - script: dotnet build
 #    displayName: 'dotnet build'
-
-steps: 
-  - script: ls -la
-    displayName: 'what files are in this folder?'
 
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
