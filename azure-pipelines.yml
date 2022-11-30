@@ -23,9 +23,8 @@ steps:
     displayName: 'DotNet Restore'
     inputs:
       command: 'restore'
-      projects: '**/*.csproj'
+      projects: 'JrWebApp/UnitTests.csproj'
       feedsToUse: 'config'
-      nugetConfigPath: './nuget.config'
 
   - script: dotnet build
     displayName: 'dotnet build'
