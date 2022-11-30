@@ -27,7 +27,7 @@ steps:
     displayName: run unit test
     inputs:
       command: test
-      workingDirectory: 'JrWebApp/test/JrWebAppSolution.UnitTests'
+      workingDirectory: 'JrWebApp/UnitTests'
 
   - script: dotnet publish -o $(build.artifactStagingDirectory)
     displayName: 'dotnet publish'
