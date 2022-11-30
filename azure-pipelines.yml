@@ -23,6 +23,12 @@ steps:
     displayName: 'dotnet build'
     workingDirectory: 'JrWebApp'
 
+  - task: DotNetCoreCLI@2
+    displayName: run unit test
+    inputs:
+      command: test
+      workingDirectory: 'JrWebApp/UnitTests'
+
   - script: dotnet publish -o $(build.artifactStagingDirectory)
     displayName: 'dotnet publish'
     workingDirectory: 'JrWebApp'
