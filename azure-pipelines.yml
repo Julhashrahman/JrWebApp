@@ -19,6 +19,14 @@ steps:
   - script: ls -la
     displayName: 'what files are in this folder?'
 
+  - task: DotNetCoreCLI@2
+    displayName: 'DotNet Restore'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+      feedsToUse: 'config'
+      nugetConfigPath: './nuget.config'
+
   - script: dotnet build
     displayName: 'dotnet build'
     workingDirectory: 'JrWebApp'
