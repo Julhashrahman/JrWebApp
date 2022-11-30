@@ -13,8 +13,16 @@ pool:
 #   buildConfiguration: 'Release'
 
 steps:
-  - script: dotnet build
-    displayName: 'dotnet build'
+  - script: pwd
+    displayName: 'what directory are we in?'
+
+#steps:
+#  - script: dotnet build
+#    displayName: 'dotnet build'
+
+steps: 
+  - script: ls -la
+    displayName: 'what files are in this folder?'
 
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
