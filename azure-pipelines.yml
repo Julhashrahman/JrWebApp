@@ -19,12 +19,12 @@ steps:
   - script: ls -la
     displayName: 'what files are in this folder?'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'DotNet Restore'
-    inputs:
-      command: 'restore'
-      projects: 'JrWebApp/UnitTests.csproj'
-      feedsToUse: 'config'
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'DotNet Restore'
+  #   inputs:
+  #     command: 'restore'
+  #     projects: 'JrWebApp/UnitTests.csproj'
+  #     feedsToUse: 'config'
 
   - script: dotnet build
     displayName: 'dotnet build'
@@ -34,7 +34,7 @@ steps:
     displayName: run unit test
     inputs:
       command: test
-      workingDirectory: 'JrWebApp/UnitTests'
+      projects: 'JrWebApp/UnitTests.csproj'
 
   - script: dotnet publish -o $(build.artifactStagingDirectory)
     displayName: 'dotnet publish'
