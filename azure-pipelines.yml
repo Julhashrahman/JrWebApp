@@ -23,6 +23,17 @@ steps:
     displayName: 'dotnet build'
     workingDirectory: 'JrWebApp'
 
+  - script: dotnet publish -o $(build.artifactStagingDirectory)
+    displayName: 'dotnet publish'
+    workingDirectory: 'JrWebApp'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      #targetPath: '$(Pipeline.Workspace)'
+      targetPath: '$(build.artifactStagingDirectory)'
+      artifact: 'drop'
+      publishLocation: 'pipeline'
+
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
 #   displayName: 'dotnet build $(buildConfiguration)'
