@@ -13,8 +13,8 @@ pool:
 #   buildConfiguration: 'Release'
 
 steps:
-  - script: echo Hello, world!
-    displayName: 'Run a one-line script testing'
+  - script: dotnet build
+    displayName: 'dotnet build'
 
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
