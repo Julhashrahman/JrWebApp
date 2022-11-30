@@ -9,8 +9,8 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-# variables:
-#   buildConfiguration: 'Release'
+ variables:
+   solitionDir: 'JrWebApp'
 
 steps:
   - script: pwd
@@ -19,9 +19,9 @@ steps:
   - script: ls -la
     displayName: 'what files are in this folder?'
 
-#steps:
-#  - script: dotnet build
-#    displayName: 'dotnet build'
+  - script: dotnet build
+    displayName: 'dotnet build'
+    workingDirectory: $(solitionDir)
 
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
