@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
  variables:
-   solitionDir: 'JrWebApp'
+   solutionDir: 'JrWebApp'
 
 steps:
   - script: pwd
@@ -21,7 +21,7 @@ steps:
 
   - script: dotnet build
     displayName: 'dotnet build'
-    workingDirectory: $(solitionDir)
+    workingDirectory: $(solutionDir)
 
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
