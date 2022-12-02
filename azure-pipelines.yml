@@ -59,7 +59,7 @@ stages:
       #     WebAppName: 'JRWebLab'
       #     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
           
-- stage: deploy-to-test
+- stage: deploy_to_test
   jobs:
     - job: deployToAppService
       displayName: 'deploy to azure app service -- test deployment slot'
