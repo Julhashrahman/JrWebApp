@@ -72,6 +72,6 @@ stages:
         - script: pwd
           displayName: what dir is this?
           workingDirectory: '$(Pipeline.Workspace)'
-        - script: ls - lR
+        - script: ls - la
           displayName: what's on disk?
           workingDirectory: '$(Pipeline.Workspace)'
