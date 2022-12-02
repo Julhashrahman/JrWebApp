@@ -40,9 +40,18 @@ stages:
           command: test
           workingDirectory: 'UnitTests'
 
-      - script: dotnet publish -o $(build.artifactStagingDirectory)
-        displayName: 'dotnet publish'
-        workingDirectory: 'JrWebApp'
+      - task: DotNetCoreCLI@2
+        displayName: publish web application for azure
+        inputs:
+          command: publish
+          arguments: '-o $(build.artifactStagingDirectory)/for-azure'
+          workingDirectory: JrWebApp
+          zipAfterPublish: true
+          publishWebProjects: true
+
+      # - script: dotnet publish -o $(build.artifactStagingDirectory)
+      #   displayName: 'dotnet publish'
+      #   workingDirectory: 'JrWebApp'
 
       - task: PublishPipelineArtifact@1
         inputs:
@@ -75,7 +84,7 @@ stages:
             azureSubscription: 'Visual Studio Professional(5153a677-5431-4077-b3c1-4dd21eb14f97)'
             appType: 'webAppLinux'
             WebAppName: 'JRWebLab'
-            packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'
+            packageForLinux: '$(Pipeline.Workspace)/drop/for-azure/*.zip'
       
         # - script: pwd
         #   displayName: what dir is this?
