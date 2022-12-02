@@ -51,6 +51,11 @@ stages:
           artifact: 'drop'
           publishLocation: 'pipeline'
 
-# steps:
-# - script: dotnet build --configuration $(buildConfiguration)
-#   displayName: 'dotnet build $(buildConfiguration)'
+      - task: AzureRmWebAppDeployment@4
+        inputs:
+          ConnectionType: 'AzureRM'
+          azureSubscription: 'Visual Studio Professional(5153a677-5431-4077-b3c1-4dd21eb14f97)'
+          appType: 'webAppLinux'
+          WebAppName: 'JRWebLab'
+          packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+          
