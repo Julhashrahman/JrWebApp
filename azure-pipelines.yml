@@ -69,9 +69,17 @@ stages:
             buildType: 'current'
             artifactName: 'drop'
             targetPath: '$(Pipeline.Workspace)/drop'
-        - script: pwd
-          displayName: what dir is this?
-          workingDirectory: '$(Pipeline.Workspace)'
-        - script: ls - la
-          displayName: what's on disk?
-          workingDirectory: '$(Pipeline.Workspace)'
+        - task: AzureRmWebAppDeployment@4
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: 'Visual Studio Professional(5153a677-5431-4077-b3c1-4dd21eb14f97)'
+            appType: 'webAppLinux'
+            WebAppName: 'JRWebLab'
+            packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'
+      
+        # - script: pwd
+        #   displayName: what dir is this?
+        #   workingDirectory: '$(Pipeline.Workspace)'
+        # - script: ls - la
+        #   displayName: what's on disk?
+        #   workingDirectory: '$(Pipeline.Workspace)'
