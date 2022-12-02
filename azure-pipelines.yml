@@ -12,40 +12,44 @@ pool:
  #variables:
  #  solutionDir: 'JrWebApp'
 
-steps:
-  - script: pwd
-    displayName: 'what directory are we in?'
+stages:
+- stage: build
+  jobs:
+    - job: build
+      steps:
+      - script: pwd
+        displayName: 'what directory are we in?'
 
-  - script: ls -la
-    displayName: 'what files are in this folder?'
+      - script: ls -la
+        displayName: 'what files are in this folder?'
 
-  # - task: DotNetCoreCLI@2
-  #   displayName: 'DotNet Restore'
-  #   inputs:
-  #     command: 'restore'
-  #     projects: 'JrWebApp/UnitTests.csproj'
-  #     feedsToUse: 'config'
+      # - task: DotNetCoreCLI@2
+      #   displayName: 'DotNet Restore'
+      #   inputs:
+      #     command: 'restore'
+      #     projects: 'JrWebApp/UnitTests.csproj'
+      #     feedsToUse: 'config'
 
-  - script: dotnet build
-    displayName: 'dotnet build'
-    workingDirectory: 'JrWebApp'
+      - script: dotnet build
+        displayName: 'dotnet build'
+        workingDirectory: 'JrWebApp'
 
-  - task: DotNetCoreCLI@2
-    displayName: run unit test
-    inputs:
-      command: test
-      workingDirectory: 'UnitTests'
+      - task: DotNetCoreCLI@2
+        displayName: run unit test
+        inputs:
+          command: test
+          workingDirectory: 'UnitTests'
 
-  - script: dotnet publish -o $(build.artifactStagingDirectory)
-    displayName: 'dotnet publish'
-    workingDirectory: 'JrWebApp'
+      - script: dotnet publish -o $(build.artifactStagingDirectory)
+        displayName: 'dotnet publish'
+        workingDirectory: 'JrWebApp'
 
-  - task: PublishPipelineArtifact@1
-    inputs:
-      #targetPath: '$(Pipeline.Workspace)'
-      targetPath: '$(build.artifactStagingDirectory)'
-      artifact: 'drop'
-      publishLocation: 'pipeline'
+      - task: PublishPipelineArtifact@1
+        inputs:
+          #targetPath: '$(Pipeline.Workspace)'
+          targetPath: '$(build.artifactStagingDirectory)'
+          artifact: 'drop'
+          publishLocation: 'pipeline'
 
 # steps:
 # - script: dotnet build --configuration $(buildConfiguration)
