@@ -12,34 +12,83 @@ pool:
  #variables:
  #  solutionDir: 'JrWebApp'
 
-steps:
-  - script: pwd
-    displayName: 'what directory are we in?'
+stages:
+- stage: build
+  jobs:
+    - job: build
+      steps:
+      - script: pwd
+        displayName: 'what directory are we in?'
 
-  - script: ls -la
-    displayName: 'what files are in this folder?'
+      - script: ls -la
+        displayName: 'what files are in this folder?'
 
-  - script: dotnet build
-    displayName: 'dotnet build'
-    workingDirectory: 'JrWebApp'
+      # - task: DotNetCoreCLI@2
+      #   displayName: 'DotNet Restore'
+      #   inputs:
+      #     command: 'restore'
+      #     projects: 'JrWebApp/UnitTests.csproj'
+      #     feedsToUse: 'config'
 
-  - task: DotNetCoreCLI@2
-    displayName: run unit test
-    inputs:
-      command: test
-      workingDirectory: 'JrWebApp/UnitTests'
+      - script: dotnet build
+        displayName: 'dotnet build'
+        workingDirectory: 'JrWebApp'
 
-  - script: dotnet publish -o $(build.artifactStagingDirectory)
-    displayName: 'dotnet publish'
-    workingDirectory: 'JrWebApp'
+      - task: DotNetCoreCLI@2
+        displayName: run unit test
+        inputs:
+          command: test
+          workingDirectory: 'UnitTests'
 
-  - task: PublishPipelineArtifact@1
-    inputs:
-      #targetPath: '$(Pipeline.Workspace)'
-      targetPath: '$(build.artifactStagingDirectory)'
-      artifact: 'drop'
-      publishLocation: 'pipeline'
+      - task: DotNetCoreCLI@2
+        displayName: publish web application for azure
+        inputs:
+          command: publish
+          arguments: '-o $(build.artifactStagingDirectory)/for-azure'
+          workingDirectory: JrWebApp
+          zipAfterPublish: true
+          publishWebProjects: true
 
-# steps:
-# - script: dotnet build --configuration $(buildConfiguration)
-#   displayName: 'dotnet build $(buildConfiguration)'
+      # - script: dotnet publish -o $(build.artifactStagingDirectory)
+      #   displayName: 'dotnet publish'
+      #   workingDirectory: 'JrWebApp'
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          #targetPath: '$(Pipeline.Workspace)'
+          targetPath: '$(build.artifactStagingDirectory)'
+          artifact: 'drop'
+          publishLocation: 'pipeline'
+
+      # - task: AzureRmWebAppDeployment@4
+      #   inputs:
+      #     ConnectionType: 'AzureRM'
+      #     azureSubscription: 'Visual Studio Professional(5153a677-5431-4077-b3c1-4dd21eb14f97)'
+      #     appType: 'webAppLinux'
+      #     WebAppName: 'JRWebLab'
+      #     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+          
+- stage: deploy_to_test
+  jobs:
+    - job: deployToAppService
+      displayName: 'deploy to azure app service -- test deployment slot'
+      steps:
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            buildType: 'current'
+            artifactName: 'drop'
+            targetPath: '$(Pipeline.Workspace)/drop'
+        - task: AzureRmWebAppDeployment@4
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: 'Visual Studio Professional(5153a677-5431-4077-b3c1-4dd21eb14f97)'
+            appType: 'webAppLinux'
+            WebAppName: 'JRWebLab'
+            packageForLinux: '$(Pipeline.Workspace)/drop/for-azure/*.zip'
+      
+        # - script: pwd
+        #   displayName: what dir is this?
+        #   workingDirectory: '$(Pipeline.Workspace)'
+        # - script: ls - la
+        #   displayName: what's on disk?
+        #   workingDirectory: '$(Pipeline.Workspace)'
